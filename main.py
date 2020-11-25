@@ -6,15 +6,17 @@ import imutils
 import cv2
 import pyautogui
 import time
-print("请输入探针在CCD上的x坐标")
+
+# get the position of tip on ntmdt
+print("input x position on tuscen")
 x1 = int(input())
-print("请输入探针在CCD上的y坐标")
+print("input y position on tuscen")
 y1 = int(input())
 
-# 获取NOVA软件中的针尖位置坐标
-print("请输入针尖在NOVA上的X坐标!")
+# get the position of tip on ntmdt
+print("input x posion on ntmdt")
 X1 = int(input())
-print("请输入针尖在NOVA上的Y坐标!")
+print("input y posion on ntmdt")
 Y1 = int(input())
 print(X1, Y1)
 
@@ -43,14 +45,14 @@ class Auto():
             for i in range(5):
                 # Get and print the mouse coordinates.
                 x, y = pyautogui.position()
-                positionStr = '鼠标坐标点（X,Y）为：{},{}'.format(str(x).rjust(4), str(y).rjust(4))
-                pix = pyautogui.screenshot().getpixel((x, y))  # 获取鼠标所在屏幕点的RGB颜色
+                positionStr = 'position（X,Y）is：{},{}'.format(str(x).rjust(4), str(y).rjust(4))
+                pix = pyautogui.screenshot().getpixel((x, y))
                 positionStr += ' RGB:(' + str(pix[0]).rjust(3) + ',' + str(pix[1]).rjust(3) + ',' + str(pix[2]).rjust(
                     3) + ')'
                 print(positionStr)
                 time.sleep(0.5)
         except:
-            print('获取鼠标位置失败')
+            print('getting position failed')
 
     def delete_type(self,):
         pyautogui.press('Delete')
@@ -72,7 +74,7 @@ class Auto():
         image = cv2.imread('E:/LYK/Images/particle_1_1.jpg')
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         blurred = cv2.GaussianBlur(gray, (11, 11), 0)
-        thresh = cv2.threshold(blurred, 200, 255, cv2.THRESH_BINARY)[1]  # 显示模糊图像的最亮区域
+        thresh = cv2.threshold(blurred, 200, 255, cv2.THRESH_BINARY)[1]
         thresh = cv2.erode(thresh, None, iterations=2)
         thresh = cv2.dilate(thresh, None, iterations=4)
         labels = measure.label(thresh, neighbors=8, background=0)
@@ -104,7 +106,7 @@ class Auto():
             d = (j[0] - x1) * (j[0] - x1) + (j[1] - y1) * (j[1] - y1)
             distances.append(d)
         if len(distances) == 0:
-            print('颗粒识别图像为空')
+            print('no detected particle')
             return
         k = distances.index(min(distances))
         print(points[k])
