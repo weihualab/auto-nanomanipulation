@@ -9,23 +9,23 @@ import time
 
 # get the position of tip on ntmdt
 print("input x position on tuscen")
-x1 = int(input())
+position_x1 = int(input())
 print("input y position on tuscen")
-y1 = int(input())
+position_y1 = int(input())
 
 # get the position of tip on ntmdt
 print("input x posion on ntmdt")
-X1 = int(input())
+position_x2 = int(input())
 print("input y posion on ntmdt")
-Y1 = int(input())
-print(X1, Y1)
+position_y2 = int(input())
+print(position_x2, position_y2)
 
 class Auto():
-    def __init__(self, x1, y1, X1, Y1):
-        self.x = x1
-        self.y = y1
-        self.x1 = X1
-        self.y1 = Y1
+    def __init__(self, position_x1, position_y1, position_x2, position_y2):
+        self.x1 = position_x1
+        self.y1 = position_y1
+        self.x2 = position_x2
+        self.y2 = position_y2
 
     def get_x1(self):
         return self.x1
@@ -33,11 +33,11 @@ class Auto():
     def get_y1(self):
         return self.y1
 
-    def get_X1(self):
-        return self.X1
+    def get_x2(self):
+        return self.x2
 
-    def get_Y1(self):
-        return self.Y1
+    def get_y2(self):
+        return self.y2
 
     def get_mouse(self):
         time.sleep(5)
@@ -54,7 +54,7 @@ class Auto():
         except:
             print('getting position failed')
 
-    def delete_type(self,):
+    def delete(self):
         pyautogui.press('Delete')
         pyautogui.press('Delete')
         pyautogui.press('Delete')
@@ -103,33 +103,33 @@ class Auto():
             cv2.circle(image, (int(cX), int(cY)), int(radius), (0, 0, 255), 3)
             cv2.putText(image, "#{}".format(i + 1), (x, y - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
         for j in points:
-            d = (j[0] - x1) * (j[0] - x1) + (j[1] - y1) * (j[1] - y1)
+            d = (j[0] - position_x1) * (j[0] - position_x1) + (j[1] - position_y1) * (j[1] - position_y1)
             distances.append(d)
         if len(distances) == 0:
             print('no detected particle')
             return
-        k = distances.index(min(distances))
-        print(points[k])
+        selected_index = distances.index(min(distances))
+        print(points[selected_index])
         image = cv2.resize(image, (683, 680))
         cv2.imshow("Image", image)
         auto.move(260, 1057, 1, 1)
         cv2.waitKey(5000)
-        p1 = points[k]
-        return p1
+        selected = points[selected_index]
+        return selected
 
     def handle_loaction(self):
-        c = auto.get_point()
-        x2 = int(c[0])
-        y2 = int(c[1])
+        position = auto.get_point()
+        x2 = int(position[0])
+        y2 = int(position[1])
         print(x2, y2)
         auto.move(67, 1058, 0.5, 1)
         auto.move(515, 103, 2, 1)
         auto.move(453, 234, 2, 1)
         auto.move(370, 267, 2, 1)
-        a = 535 + 5.77 * auto.get_X1()
-        b = 962 - 5.77 * auto.get_Y1()
-        A = 535 + 5.77 * auto.get_X1() + 5.77 * 0.083 * (x2 - x1)
-        B = 962 - 5.77 * auto.get_Y1() + 5.77 * 0.083 * (y2 - y1)
+        a = 535 + 5.77 * auto.get_x1()
+        b = 962 - 5.77 * auto.get_y1()
+        A = 535 + 5.77 * auto.get_x2() + 5.77 * 0.083 * (x2 - position_x1)
+        B = 962 - 5.77 * auto.get_y2() + 5.77 * 0.083 * (y2 - position_y1)
         auto.move(476, 171, 2, 1)
         pyautogui.moveTo(a, b, duration=2)
         pyautogui.dragTo(A, B, 5, button='left')
@@ -139,12 +139,12 @@ class Auto():
         pyautogui.dragTo(A, B, 5, button='left')
         time.sleep(1)
         auto.move(1787, 319, 2, 1)
-        auto.delete_type()
+        auto.delete()
         auto.move(463, 168, 2, 1)
         auto.move(43, 215, 1, 1)
         auto.move(119, 1056, 1, 1)
         auto.move(106, 246, 1, 1)
-        auto.delete_type()
+        auto.delete()
         time.sleep(185)
         auto.move(67, 1058, 0.5, 1)
         auto.move(397, 107, 0.5, 1)
@@ -152,9 +152,9 @@ class Auto():
         pyautogui.click()
         auto.move(119, 1056, 1, 1)
         auto.move(106, 246, 1, 1)
-        auto.delete_type()
+        auto.delete()
         auto.move(106, 246, 1, 1)
-        auto.delete_type()
+        auto.delete()
 
 auto = Auto(10, 10, 10, 10)
 
