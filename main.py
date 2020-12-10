@@ -6,18 +6,17 @@ import cv2
 import pyautogui
 import time
 
-
 # get the position of tip on mosaic
 print("---input x position on mosaic---")
-mosaic_x = 100  # int(input())
+mosaic_x = 1000 #int(input())
 print("---input y position on mosaic---")
-mosaic_y = 100  # int(input())
+mosaic_y = 800 #int(input())
 
 # get the position of tip on nova
 print("---input x position on nova---")
-nova_x = 100  # int(input())
+nova_x = 57.6 #int(input())
 print("---input y position on nova---")
-nova_y = 100  # int(input())
+nova_y = 57.5 #int(input())
 
 
 def get_position():
@@ -93,7 +92,7 @@ def get_point():
     selected_index = distances.index(min(distances))
     image = cv2.resize(image, (683, 680))
     cv2.imshow("particles", image)
-    pyautogui.moveTo(580, 1057, duration=1)
+    pyautogui.moveTo(748, 1057, duration=1)
     pyautogui.click()
     cv2.waitKey(5000)
     selected = points[selected_index]
@@ -154,12 +153,12 @@ def handle_location():
     move_click(159, 229, 1, 1, 'Action')
     delete_write('10', 1)
     move_click(14, 505, 1, 1, 'point')
-    move_click(to_x + 5, to_y + 5, 1, 1, 'point')
-    move_click(1141, 170, 1, 1, 'BV')
-    delete_write('0', 1)
+    point_x = 410 + 5.63 * nova_x
+    point_y = 992 - 5.64 * nova_y
+    move_click(point_x, point_y, 1, 1, 'point')
     time.sleep(3)
     move_click(42, 204, 1, 1, 'run')
-    for i in range(5):
+    for i in range(10):
         time.sleep(1)
         pyautogui.click()
     move_click(476, 171, 1, 1, 'feedback')
@@ -168,11 +167,14 @@ def handle_location():
     move_click(300, 1056, 1, 1, 'mosaic')
     move_click(106, 246, 1, 1, 'exp time')
     delete_write('10', 3)
-    time.sleep(5)
+    time.sleep(3)
+    pyautogui.click()
     delete_write('400', 3)
+    time.sleep(3)
 
 
 if __name__ == '__main__':
     handle_location()
-    pyautogui.alert(text='program end', title='alert', timeout=60*1000)
+    pyautogui.alert(text='program end', title='alert', timeout=10*1000)
+    raise SystemExit
     # auto.get_mouse()
