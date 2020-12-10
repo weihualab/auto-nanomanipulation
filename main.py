@@ -8,15 +8,15 @@ import time
 
 # get the position of tip on mosaic
 print("---input x position on mosaic---")
-mosaic_x = 1000 #int(input())
+mosaic_x = int(input())
 print("---input y position on mosaic---")
-mosaic_y = 800 #int(input())
+mosaic_y = int(input())
 
 # get the position of tip on nova
 print("---input x position on nova---")
-nova_x = 57.6 #int(input())
+nova_x = int(input())
 print("---input y position on nova---")
-nova_y = 57.5 #int(input())
+nova_y = int(input())
 
 
 def get_position():
@@ -143,7 +143,7 @@ def handle_location():
     delete_write('400', 3)
 
     # pick-up
-    time.sleep(1)
+    time.sleep(100)
 
     # place
     move_click(67, 1058, 1, 1, 'nova')
@@ -176,5 +176,3 @@ def handle_location():
 if __name__ == '__main__':
     handle_location()
     pyautogui.alert(text='program end', title='alert', timeout=10*1000)
-    raise SystemExit
-    # auto.get_mouse()
