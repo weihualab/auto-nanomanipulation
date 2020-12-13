@@ -37,7 +37,7 @@ def get_position():
 
 
 def delete_write(param, sleep_time):
-    for i in range(6):
+    for i in range(8):
         pyautogui.press('Delete')
     pyautogui.typewrite(param)
     time.sleep(sleep_time)
@@ -52,13 +52,13 @@ def move_click(x, y, dur, sleep_time, position):
 
 
 def get_point():
-    image = cv2.imread('E:/LYK/Images/particle_1_1.jpg')
+    image = cv2.imread('file_path')
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (11, 11), 0)
     thresh = cv2.threshold(blurred, 200, 255, cv2.THRESH_BINARY)[1]
-    thresh = cv2.erode(thresh, None, iterations=2)
-    thresh = cv2.dilate(thresh, None, iterations=4)
-    labels = measure.label(thresh, neighbors=8, background=0)
+    thresh = cv2.erode(thresh, None, iterations=1)
+    thresh = cv2.dilate(thresh, None, iterations=1)
+    labels = measure.label(thresh, connectivity=2, background=0)
     mask = np.zeros(thresh.shape, dtype="uint8")
     for label in np.unique(labels):
         if label == 0:
@@ -101,6 +101,7 @@ def get_point():
 
 def handle_location():
     move_click(300, 1056, 1, 1, 'mosaic')
+    move_click(57, 69, 1, 5, 'capture')
     position = get_point()
     particle_x = int(position[0])
     particle_y = int(position[1])
@@ -108,6 +109,7 @@ def handle_location():
     move_click(300, 1056, 1, 0, 'mosaic')
     move_click(106, 246, 1, 1, 'exp time')
     delete_write('10', 3)
+    time.sleep(2)
 
     # move tip to target position
     move_click(67, 1058, 1, 1, 'nova')
@@ -126,12 +128,17 @@ def handle_location():
     time.sleep(2)
     move_click(398, 273, 1, 1, 'scan area')
     pyautogui.moveTo(903, 643, duration=2)
-    pyautogui.dragTo(to_x, to_y, 5, button='left')
+    pyautogui.dragTo(to_x, to_y, 6, button='left')
     time.sleep(1)
+    move_click(320, 234, 1, 1, 'scan rate')
+    move_click(310, 327, 1, 1, 'sec')
+    move_click(204, 237, 1, 1, 'scan rate text')
+    scan_time = 180
+    delete_write(str(scan_time), 1)
+    move_click(373, 170, 1, 1, 'SetPoint')
+    delete_write('4', 1)
     move_click(1755, 323, 1, 1, 'scan param')
     delete_write('5.000', 1)
-    move_click(1141, 170, 1, 1, 'BV')
-    delete_write('-10', 1)
 
     # start scanning
     move_click(476, 171, 1, 1, 'feedback')
@@ -143,22 +150,31 @@ def handle_location():
     delete_write('400', 3)
 
     # pick-up
-    time.sleep(100)
+    time.sleep(scan_time)
 
     # place
     move_click(67, 1058, 1, 1, 'nova')
     move_click(742, 102, 1, 1, 'Litho')
     move_click(373, 170, 1, 1, 'SetPoint')
-    delete_write('0.1', 1)
+    delete_write('1', 1)
     move_click(159, 229, 1, 1, 'Action')
     delete_write('10', 1)
+    move_click(450, 254, 1, 1, 'rate')
+    move_click(443, 323, 1, 1, 'um/sec')
+    move_click(295, 254, 1, 1, 'rate text')
+    delete_write('10', 1)
+    move_click(1141, 170, 1, 1, 'BV')
+    delete_write('-10', 1)
+    move_click(173, 290, 1, 1, 'fit to max area')
     move_click(14, 505, 1, 1, 'point')
     point_x = 410 + 5.63 * nova_x
     point_y = 992 - 5.64 * nova_y
     move_click(point_x, point_y, 1, 1, 'point')
     time.sleep(3)
     move_click(42, 204, 1, 1, 'run')
-    for i in range(10):
+    pyautogui.click()
+    time.sleep(10)
+    for i in range(60):
         time.sleep(1)
         pyautogui.click()
     move_click(476, 171, 1, 1, 'feedback')
@@ -167,12 +183,12 @@ def handle_location():
     move_click(300, 1056, 1, 1, 'mosaic')
     move_click(106, 246, 1, 1, 'exp time')
     delete_write('10', 3)
-    time.sleep(3)
+    time.sleep(5)
     pyautogui.click()
     delete_write('400', 3)
-    time.sleep(3)
+    time.sleep(5)
 
 
 if __name__ == '__main__':
     handle_location()
-    pyautogui.alert(text='program end', title='alert', timeout=10*1000)
+    pyautogui.alert(text='program end', title='alert', timeout=10 * 1000)
